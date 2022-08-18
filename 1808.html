@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas</title>
+</head>
+<body>
+    <canvas id="mycanvas" width="500" height="500">
+        No funciona
+    </canvas>
+
+    <script>
+        var cv = document.getElementById('mycanvas');
+        var ctx = cv.getContext('2d');
+
+        //ctx.globalAlpha = 0.6;
+        var fig = "arc";
+        var press = false;
+        var super_x=0; var super_y=0;
+
+        function generateRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+        
+        cv.addEventListener("click", function(e){
+            ctx.fillStyle=color;
+            ctx.strokeStyle=color;
+            console.log(e);
+            if(fig=="arc"){
+                ctx.beginPath();
+                ctx.arc(e.offsetX-10,e.offsetY-10,50,0*Math.PI, 2*Math.PI);
+                ctx.fill();
+                ctx.stroke();
+            }else{
+                ctx.fillRect(e.offsetX-10,e.offsetY-10, 50, 50);
+                ctx.stroke();
+            }
+            
+        })
+
+        cv.addEventListener("mouseover", function(e){
+            color=generateRandomColor();
+            fig = (fig=="arc")?"rec":"arc";
+        })
+
+        cv.addEventListener("mousemove", function(e){
+            if(press){
+                ctx.fillStyle="black";
+                ctx.fillRect(e.offsetX-10,e.offsetY-10, 10, 10);
+            }
+        })
+
+        cv.addEventListener("mousedown", function(){
+            press=true;
+        })
+
+        cv.addEventListener("mouseup", function(){
+            press=false;
+        })
+
+        document.addEventListener("keydown", function(e){
+            console.log(e);
+            //arriba
+            if(e.keyCode==87 || e.keyCode==38){
+                super_y-=10;
+            }
+            //abajo
+            if(e.keyCode==83 || e.keyCode==40){
+                super_y+=10;
+            }
+            //derecha
+            if(e.keyCode==68 || e.keyCode==39){
+                super_x+=10;
+            }
+            //izquierda
+            if(e.keyCode==65 || e.keyCode==37){
+                super_x-=10;
+            }
+            paint();
+        })
+
+        function paint() {
+            ctx.fillStyle="white";
+            ctx.fillRect(0,0,500,500);
+            ctx.fillStyle="red";
+            ctx.fillRect(super_x,super_y,50,50);
+        }
+    </script>
+    
+</body>
+</html>
