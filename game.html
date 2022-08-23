@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas</title>
+</head>
+<body>
+    <canvas id="mycanvas" width="1000" height="1000">
+        No funciona
+    </canvas>
+
+    <script>
+        var cv = null;
+        var ctx = null;
+
+        function run() {
+            cv = document.getElementById('mycanvas');
+            ctx = cv.getContext('2d');
+
+            paint();
+        }
+
+        function generateRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        //ctx.globalAlpha = 0.6;
+        var fig = "arc";
+        var press = false;
+        var super_x=0; var super_y=10;
+
+        document.addEventListener("keydown", function(e){
+            console.log(e);
+            //arriba
+            if(e.keyCode==87 || e.keyCode==38){
+                super_y-=10;
+            }
+            //abajo
+            if(e.keyCode==83 || e.keyCode==40){
+                super_y+=10;
+            }
+            //derecha
+            if(e.keyCode==68 || e.keyCode==39){
+                super_x+=10;
+            }
+            //izquierda
+            if(e.keyCode==65 || e.keyCode==37){
+                super_x-=10;
+            }
+            paint();
+        })
+
+        function paint() {
+            var color = generateRandomColor;
+            window.requestAnimationFrame(paint)
+            ctx.fillStyle="black";
+            ctx.fillRect(0,0,1000,1000);
+            ctx.fillStyle="white";
+            ctx.fillRect(super_x,super_y,50,50);
+
+            super_x+=5;
+            if(super_x>1000){
+                super_x=0;
+            }
+        }
+
+        window.requestAnimationFrame = (function () {
+            return window.requestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                function (callback) {
+                    window.setTimeout(callback, 17);
+                };
+        }());
+
+        window.addEventListener("load", run, false);
+
+    </script>
+    
+</body>
+</html>
