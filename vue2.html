@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="https://unpkg.com/vue@3"></script>
+    <div id="contenedor">
+        <h1>{{name}}</h1>
+        <h1>{{lastname}}</h1>
+        <input type="text" v-model="name">
+        <br></br>
+        <input v-model="num1" type="text" name="" id="">
+        <input v-model="num2" type="text" name="" id="">
+        <button @click="sumar">Sumame jajaja</button>
+        <button @click="saludar">Saludar</button>
+        <h2>{{res}}</h2>
+        <br></br>
+        <input v-model="age" type="text" name="" id="">
+        <h3 v-if="age<18">No puedes pasar</h3>
+        <h3 v-else>Pasele a lo barrido</h3>
+        <br></br>
+        <ol>
+            <li v-for="item in chamacos"> {{item.nombre}} : <span> {{item.rol}} </span></li>
+        </ol>
+        <input v-model="nombre" type="text" name="" id="">
+        <input v-model="rol" type="text" name="" id="">
+        <button @click="save">Agregar</button>
+    </div>
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    name: 'Evelyn',
+                    lastname: 'Aragón',
+                    num1: 0,
+                    num2: 0,
+                    res: 0,
+                    age: 0,
+                    nombre: '',
+                    rol: '',
+                    chamacos: [
+                        {nombre: 'Iran', rol: 'front'},
+                        {nombre: 'Duarte', rol: 'back'},
+                        {nombre: 'Buenrostro', rol: 'movil'}
+                    ]
+                }
+            },
+            methods: {
+                saludar(){
+                    alert("Hola, " + this.name);
+                },
+                sumar(){
+                    this.res = parseInt(this.num1)+parseInt(this.num2);
+                },
+                save(){
+                    this.chamacos.push({nombre: this.nombre, rol: this.rol});
+                }
+            },
+        }).mount('#contenedor')
+    </script>
+</body>
+</html>
