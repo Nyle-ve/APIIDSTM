@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <script src="https://unpkg.com/vue@3"></script>
+    <div id="contenedor">
+        <fieldset>
+            <legend>
+                <strong>Login</strong>
+            </legend>
+            <label for="">Correo: </label><br>
+            <input type="email" v-model="email" placeholder="Ingrese el correo"><br>
+            <label for="">Contraseña: </label><br>
+            <input type="password" v-model="password" placeholder="Ingrese la contraseña"><br>
+            <button @click="login">Aceptar</button>
+        </fieldset>
+        <div v-show="!access">
+            <br>
+            <table class="glossary collapse">
+                <legend>
+                    <strong>User List</strong>
+                    <button style="margin-left: 10px;">Agregar+</button>
+                </legend><br>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Website</th>
+                </tr>
+                  <tr v-for="user in users">
+                    <td>{{user.name}}</td>
+                    <td>{{user.username}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.phone}}</td>
+                    <td>{{user.website}}</td>
+                  </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const {createApp} = Vue;
+        const app = createApp({
+            data(){
+                return{
+                    users: null,
+                    email: '',
+                    password: '',
+                    access: false,
+                }
+            },
+            methods:{
+                login(e){
+                    e.preventDefault();
+                    if(this.email && this.password){
+                        
+                        var userLogin = null;
+
+                        this.users.map((user) => {
+                            if(user.email.toLowerCase() === this.email.toLowerCase()){
+                                if(user.password == this.password){
+                                    userLogin = user;
+                                }
+                            }
+                        });
+
+                        if(userLogin) {
+                            alert('Bienvenid@, ' + userLogin.username);
+                            //document.location.href = 'welcome.html';
+                            this.access = true;
+                        }
+                        else alert('Correo y/o contraseña incorrectos');
+                    }
+                    else{
+                        alert('Llene todos los campos');
+                    }
+                }
+            },
+            mounted(){
+                fetch('users.json')
+                .then((res) => (res.json()))
+                .then((json) => (this.users = json))
+                .then((err) => (console.log(err)));
+            }
+        }).mount('#contenedor')
+    </script>
+    
+    <style>
+        body{
+            background-color:blanchedalmond;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        button{
+            margin-left: 10px;
+            padding-block: 5px;
+            border-radius: 5px;
+            background-color: burlywood;
+            color: teal;
+            font-size: 16px;
+        }
+        label{
+            margin-top: 10px;
+            margin: 10px;
+        }
+        legend{
+            font-size: 32px;
+            color: teal;
+        }
+        input{
+            margin: 10px;
+            border-radius: 5px;
+            padding-block: 5px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        table, th, td {
+            border: 1px solid;
+            background-color: burlywood;
+            color: teal;
+            height: 50px;
+        }
+    </style>
+</body>
+</html>
