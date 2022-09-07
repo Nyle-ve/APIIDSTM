@@ -11,6 +11,7 @@
 <body>
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/vue@3"></script>
     <div id="contenedor">
         <div class="container">
@@ -20,11 +21,11 @@
             <form class="row g-3">
                 <div class="col-md-5">
                   <label for="inputEmail" class="form-label">Email</label>
-                  <input type="email" v-model="email" placeholder="Ingrese el correo" class="form-control" id="inputEmail">
+                  <input type="email" v-model="correo" placeholder="Ingrese el correo" class="form-control" id="inputEmail">
                 </div>
                 <div class="col-md-5">
                   <label for="inputPassword" class="form-label">Password</label>
-                  <input type="password" v-model="password" placeholder="Ingrese la contraseña" class="form-control" id="inputPassword">
+                  <input type="password" v-model="contrasena" placeholder="Ingrese la contraseña" class="form-control" id="inputPassword">
                 </div>
                 <div class="col-md-2">
                     <br>
@@ -32,7 +33,7 @@
                 </div>
             </form>
         </div>
-        <div class="container" v-show="!access">
+        <div class="container" v-show="access">
             <br>
             <legend>
                 <strong>User List</strong>
@@ -51,7 +52,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="user in users">
+                  <tr v-for="(user, index) in users">
                     <td>{{user.name}}</td>
                     <td>{{user.email}}</td>
                     <td>{{user.phone}}</td>
@@ -87,11 +88,11 @@
                                 </div>
                                 <div class="col-md-6">
                                 <label for="inputEmail4" class="form-label">Correo</label>
-                                <input v-model="correo" type="email" class="form-control" id="inputEmail4">
+                                <input v-model="email" type="email" class="form-control" id="inputEmail4">
                                 </div>
                                 <div class="col-md-6">
                                 <label for="inputPassword4" class="form-label">Contraseña</label>
-                                <input v-model="contrasena" type="password" class="form-control" id="inputPassword4">
+                                <input v-model="password" type="password" class="form-control" id="inputPassword4">
                                 </div>
                                 <div class="col-12">
                                 <label for="inputAddress" class="form-label">Dirección</label>
@@ -109,7 +110,12 @@
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-success">Aceptar</button>
+                        <button @click="agregado" v-if="nuevo" type="button" class="btn btn-success">
+                            Agregar
+                        </button>
+                        <button @click="editado" v-if="!nuevo" type="button" class="btn btn-success">
+                            Editar
+                        </button>
                     </div>
                 </div>
             </div>
@@ -122,31 +128,31 @@
             data(){
                 return{
                     users: null,
-                    email: '',
-                    password: '',
+                    correo: '',
+                    contrasena: '',
                     access: false,
                     titulo: '',
                     name: '',
-                    correo: '',
-                    contrasena: '',
+                    email: '',
+                    password: '',
                     phone: '',
                     street: '',
                     zipcode: '',
                     city: '',
-                    new: false,
+                    nuevo: false,
                     id: Number
                 }
             },
             methods:{
                 login(e){
                     e.preventDefault();
-                    if(this.email && this.password){
+                    if(this.correo && this.contrasena){
                         
                         var userLogin = null;
 
                         this.users.map((user) => {
-                            if(user.email.toLowerCase() === this.email.toLowerCase()){
-                                if(user.password == this.password){
+                            if(user.email.toLowerCase() === this.correo.toLowerCase()){
+                                if(user.password == this.contrasena){
                                     userLogin = user;
                                 }
                             }
@@ -166,33 +172,39 @@
                 editar(user){
                     this.titulo = 'Editar usuario';
                     this.name = user.name;
-                    this.correo = user.email;
-                    this.contrasena = "";
+                    this.email = user.email;
+                    this.password = "";
                     this.phone = user.phone;
                     this.street = user.address.street;
                     this.zipcode = user.address.zipcode;
                     this.city = user.address.city;
-                    this.new = false;
+                    this.nuevo = false;
                     this.id = user.id;
                 },
                 agregar(){
                     this.titulo = 'Agregar usuario';
                     this.name = "";
-                    this.correo = "";
-                    this.contrasena = "";
+                    this.email = "";
+                    this.password = "";
                     this.phone = "";
                     this.street = "";
                     this.zipcode = "";
                     this.city = "";
-                    this.new = true;
+                    this.nuevo = true;
                 },
-                action(){
-                    if(this.new){
-                        this.add();
-                    }else{
-                        this.edit();
-                    }
+                agregado(){
+                    this.users.push({name: this.name, phone: this.phone, email: this.email, 
+                                    password: this.password});
                 },
+                editado(){
+                    this.users[this.id] = {name: this.name, phone: this.phone, email: this.email, 
+                                    password: this.password};
+
+                },
+                eliminar(user){
+                    this.id = user.id;
+                    this.users.splice(this.id, 1);
+                }
             },
             mounted(){
                 fetch('users.json')
