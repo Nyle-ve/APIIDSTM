@@ -96,24 +96,24 @@
                                 </div>
                                 <div class="col-12">
                                 <label for="inputAddress" class="form-label">Dirección</label>
-                                <input v-model="street" type="text" class="form-control" id="inputAddress">
+                                <input v-model="address.street" type="text" class="form-control" id="inputAddress">
                                 </div>
                                 <div class="col-md-8">
                                 <label for="inputCity" class="form-label">Ciudad</label>
-                                <input v-model="city" type="text" class="form-control" id="inputCity">
+                                <input v-model="address.city" type="text" class="form-control" id="inputCity">
                                 </div>
                                 <div class="col-md-4">
                                 <label for="inputZip" class="form-label">C.P.</label>
-                                <input v-model="zipcode" type="text" class="form-control" id="inputZip">
+                                <input v-model="address.zipcode" type="text" class="form-control" id="inputZip">
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button @click="agregado" v-if="nuevo" type="button" class="btn btn-success">
+                        <button @click="agregado" v-if="nuevo" type="button" class="btn btn-success" data-bs-dismiss="modal">
                             Agregar
                         </button>
-                        <button @click="editado" v-if="!nuevo" type="button" class="btn btn-success">
+                        <button @click="editado" v-if="!nuevo" type="button" class="btn btn-success" data-bs-dismiss="modal">
                             Editar
                         </button>
                     </div>
@@ -136,9 +136,11 @@
                     email: '',
                     password: '',
                     phone: '',
-                    street: '',
-                    zipcode: '',
-                    city: '',
+                    address: {
+                        street: '',
+                        zipcode: '',
+                        city: ''
+                    },
                     nuevo: false,
                     id: Number
                 }
@@ -147,9 +149,7 @@
                 login(e){
                     e.preventDefault();
                     if(this.correo && this.contrasena){
-                        
                         var userLogin = null;
-
                         this.users.map((user) => {
                             if(user.email.toLowerCase() === this.correo.toLowerCase()){
                                 if(user.password == this.contrasena){
@@ -157,29 +157,30 @@
                                 }
                             }
                         });
-
                         if(userLogin) {
                             alert('Bienvenid@, ' + userLogin.name);
                             //document.location.href = 'welcome.html';
                             this.access = true;
                         }
-                        else alert('Correo y/o contraseña incorrectos');
+                        else{
+                            alert('Correo y/o contraseña incorrectos');
+                        }
                     }
                     else{
                         alert('Llene todos los campos');
                     }
                 },
                 editar(user){
+                    this.id = user.id;
                     this.titulo = 'Editar usuario';
                     this.name = user.name;
                     this.email = user.email;
                     this.password = "";
                     this.phone = user.phone;
-                    this.street = user.address.street;
-                    this.zipcode = user.address.zipcode;
-                    this.city = user.address.city;
+                    this.address.street = user.address.street;
+                    this.address.zipcode = user.address.zipcode;
+                    this.address.city = user.address.city;
                     this.nuevo = false;
-                    this.id = user.id;
                 },
                 agregar(){
                     this.titulo = 'Agregar usuario';
@@ -187,23 +188,42 @@
                     this.email = "";
                     this.password = "";
                     this.phone = "";
-                    this.street = "";
-                    this.zipcode = "";
-                    this.city = "";
+                    this.address.street = "";
+                    this.address.zipcode = "";
+                    this.address.city = "";
                     this.nuevo = true;
                 },
                 agregado(){
-                    this.users.push({name: this.name, phone: this.phone, email: this.email, 
-                                    password: this.password});
+                    this.users.push({name: this.name,
+                                    id: this.users.length+1,
+                                    phone: this.phone,
+                                    email: this.email, 
+                                    password: this.password,
+                                    address: this.address
+                                    });
                 },
                 editado(){
-                    this.users[this.id] = {name: this.name, phone: this.phone, email: this.email, 
-                                    password: this.password};
+                    this.users[this.id-1] = {name: this.name,
+                                    phone: this.phone,
+                                    email: this.email, 
+                                    password: this.password,
+                                    address: this.address
+                                    };
+                    this.id = null;
 
                 },
                 eliminar(user){
                     this.id = user.id;
-                    this.users.splice(this.id, 1);
+                    for (let i = 0; i < this.users.length; i++) {
+                        if(this.users[i].id==this.id){
+                            this.users.splice(i, 1);
+                            for (let k = i; k < this.users.length; k++) {
+                                this.users[k].id -= 1;
+                                
+                            }
+                        }
+                        
+                    }
                 }
             },
             mounted(){
