@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <title>Login</title>
+</head>
+<body>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/vue@3"></script>
+    <div id="contenedor">
+        <div class="container">
+            <legend class="mt-4 ms-3">
+                <strong>Películas</strong>
+                <br>
+                <p>Bienvenid@, {{username}}</p>
+            </legend>
+            <div class="row g-4">
+                <div v-for="movie in movies" class="card ms-4" style="width: 15rem; height: 30rem;">
+                    <img :src="'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/'+movie.poster_path" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{movie.title}}</h5>
+                        <button @click="redirect(movie)" class="position-absolute bottom-0 end-0 btn btn-primary">Ver</button>
+                    </div>
+                </div> 
+            </div>
+            
+        </div>
+        
+    </div>
+
+    <script>
+        const {createApp} = Vue;
+        const app = createApp({
+            data(){
+                return{
+                    movies: JSON.parse(window.localStorage.getItem('movies')),
+                    username: window.localStorage.getItem('username'),
+                }
+            },
+            computed:{
+                getMovie(){
+                    return JSON.parse(window.localStorage.getItem('movies'));
+                },
+                getUser(){
+                    return window.localStorage.getItem('username');
+                }
+            },
+            methods:{
+                login(e){
+                    e.preventDefault();
+                    console.log(this.movies);
+                    
+                },
+                redirect(movie){
+                    localStorage.setItem("movie", JSON.stringify(movie));
+                    document.location.href = 'info.html';
+                },
+            },
+            mounted() {
+                
+            },
+
+        }).mount('#contenedor')
+    </script>
+    
+</body>
+</html>
