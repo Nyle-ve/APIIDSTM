@@ -16,7 +16,7 @@ if(isset($_POST['action'])){
   }
 }
 
-  function getProducts(){
+  function createProduct(){
 
     $curl = curl_init();
 
