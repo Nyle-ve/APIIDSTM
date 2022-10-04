@@ -25,7 +25,16 @@
     function addProducto(){
         document.getElementById("oculto_input").value = "create";
     }
-    function editProducto(){
+    function editProducto(target){
         document.getElementById("oculto_input").value = "update";
+
+        let product = JSON.parse(target.getAttribute('data-product'));
+
+        document.getElementById("name").value = product.name;
+        document.getElementById("slug").value = product.slug;
+        document.getElementById("description").value = product.description;
+        document.getElementById("features").value = product.features;
+        document.getElementById("brand").value = product.brand_id;
+        document.getElementById("id").value = product.id;
     }
 </script>
