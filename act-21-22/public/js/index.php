@@ -37,7 +37,7 @@
               <h5 class="card-title"> <?php echo $producto->name ?> </h5>
               <h6 class="card-subtitle mb-2 text-muted"> <?php echo $producto->brand->name ?> </h6>
               <p class="card-text"> <?php echo $producto->description ?> </p>
-              <button id="editar" class="btn btn-warning" onclick="updateProducto()" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <button id="editar" data-product='<?= json_encode($producto) ?>' onclick="updateProducto(this)" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Editar
               </button>
               <button id="eliminar" name="action" value="delete" class="btn btn-danger" onclick="eliminar()">
