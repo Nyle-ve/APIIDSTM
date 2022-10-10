@@ -46,7 +46,7 @@ class AuthController
             $_SESSION['avatar'] = $response->data->avatar;
             $_SESSION['token'] = $response->data->token;
             
-            header("Location:".BASE_PATH."index.php");
+            header("Location:".BASE_PATH."public/js/index.php");
             
         }else{
             header("Location:".BASE_PATH."index.php?error=true");

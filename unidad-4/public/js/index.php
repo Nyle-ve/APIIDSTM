@@ -43,7 +43,7 @@
               <button id="eliminar" onclick="eliminar(<?= $producto->id ?>)" name="action" value="delete" class="btn btn-danger">
                 Eliminar
               </button>
-              <a href="<?= BASE_PATH ?>public/js/detalles.php?slug=<?= $producto->slug ?>" class="btn btn-info">Detalles</a>
+              <a href="<?= BASE_PATH."detail/".$producto->slug ?>" class="btn btn-info">Detalles</a>
             </div>
           </div>
 
