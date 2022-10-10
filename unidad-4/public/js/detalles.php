@@ -1,3 +1,10 @@
+<?php 
+    include 'ProductController.php';
+    if (isset($_GET['slug'])) {
+        $slug = $_GET['slug'];
+        $producto = getProduct($slug);
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,18 +34,28 @@
       <div class="row">
         <div class="col-md-4 col-sm-10 p-2">
           <div class="card" style="width: 18rem;">
-            <img src="coin.png" class="card-img-top" alt="...">
+            <img src="<?= $producto->cover ?>" class="card-img-top" alt="...">
             <div class="card-body">
-              <h5 class="card-title">Tostachos</h5>
-              <h6 class="card-subtitle mb-2 text-muted">Botanas</h6>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <h5 class="card-title"> <?= $producto->name ?> </h5>
+              <h6 class="card-subtitle mb-2 text-muted"> <?php echo $producto->brand->name ?> </h6>
+              <p class="card-text"> <?php echo $producto->description ?> </p>
+              <ul>                            
+                <?php foreach ($producto->tags as $tag) {?>
+                <li> <?= $tag->name ?> </li>
+                <?php } ?>
+              </ul>
+              <ul>                            
+                <?php foreach ($producto->categories as $category) {?>
+                <li> <?= $category->name ?> </li>
+                <?php } ?>
+              </ul>
               <button class="btn btn-warning">
                 Editar
               </button>
               <button class="btn btn-danger">
                 Eliminar
               </button>
-              <a href="detalles.php" class="btn btn-info">Detalles</a>
+              <a class="btn btn-info">Detalles</a>
             </div>
           </div>
 

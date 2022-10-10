@@ -1,14 +1,18 @@
 <?php
-if(isset($_POST['action'])){
-    switch($_POST['action']){
-        case 'access':
-            $authC = new AuthController();
+include_once "config.php";
 
-            $email = strip_tags($_POST['email']);
-            $password = strip_tags($_POST['password']);
-            
-            $authC->login($email, $password);
-        break;
+if(isset($_POST['action'])){
+    if (isset($_POST['global_token']) && $_POST['global_token'] == $_SESSION['global_token']) {
+        switch($_POST['action']){
+            case 'access':
+                $authC = new AuthController();
+
+                $email = strip_tags($_POST['email']);
+                $password = strip_tags($_POST['password']);
+                
+                $authC->login($email, $password);
+            break;
+        }
     }
 }
 
@@ -18,15 +22,15 @@ class AuthController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-        CURLOPT_URL => 'http://crud.jonathansoto.mx/api/login',
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_POSTFIELDS => array('email' => $email,'password' => $password),
+            CURLOPT_URL => 'http://crud.jonathansoto.mx/api/login',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array('email' => $email,'password' => $password),
         ));
 
         $response = curl_exec($curl);
@@ -37,17 +41,15 @@ class AuthController
         $response = json_decode($response);
 
         if (isset($response->code) && $response->code > 0) {
-            session_start();
             $_SESSION['name'] = $response->data->name;
             $_SESSION['lastname'] = $response->data->lastname;
             $_SESSION['avatar'] = $response->data->avatar;
             $_SESSION['token'] = $response->data->token;
             
-            header("Location:../public/js/index.php");
+            header("Location:".BASE_PATH."index.php");
             
         }else{
-            #var_dump($response);
-            header("Location:../public/js/index.php?error=true");
+            header("Location:".BASE_PATH."index.php?error=true");
         }
         echo $response;
     }
