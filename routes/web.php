@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,22 +19,30 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('saludo', function () {
-    echo "Hola ";
-});
+Route::get('users/', [UserController::class, 'index']);
 
-Route::get('saludo/{name}', function ($name) {
-    echo "Hola " .$name;
-});
+Route::get('users/create', [UserController::class, 'create']);
 
-Route::get('suma/{no1}/{no2}', function ($no1,$no2) {
-    echo $no1 + $no2;
-});
+Route::get('users/{id}', [UserController::class, 'show']);
 
-Route::get('suma/{no1}/{no2}/{no3}', function ($no1,$no2,$no3=0) {
-    echo $no1 + $no2 + $no3;
-})->where(['no1'=>'[0-9]+','no2'=>'[0-9]+']);
+Route::post('users/', [UserController::class, 'store']);
 
-Route::get('suma/', function (Request $request) {
+// Route::get('saludo', function () {
+//     echo "Hola ";
+// });
+
+// Route::get('saludo/{name}', function ($name) {
+//     echo "Hola " .$name;
+// });
+
+// Route::get('suma/{no1}/{no2}', function ($no1,$no2) {
+//     echo $no1 + $no2;
+// });
+
+// Route::get('suma/{no1}/{no2}/{no3}', function ($no1,$no2,$no3=0) {
+//     echo $no1 + $no2 + $no3;
+// })->where(['no1'=>'[0-9]+','no2'=>'[0-9]+']);
+
+// Route::get('suma/', function (Request $request) {
     
-});
+// });
