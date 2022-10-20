@@ -14,9 +14,9 @@
                 Acceso al panel
             </legend>
             <label for="">Name: </label>
-            <input id="name" type="text" placeholder="Ingrese su nombre">
+            <input name="name" type="text" placeholder="Ingrese su nombre">
             <label for="">Last name: </label>
-            <input id="lastname" type="text" placeholder="Ingrese su apellido">
+            <input name="lastname" type="text" placeholder="Ingrese su apellido">
             <button type="submit" style="margin-left: 4px">OK</button>
         </form>
     </div>
