@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ReservationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,10 @@ Route::post('users/', [UserController::class, 'store']);
 Route::get('clients/', [ClientController::class, 'index']);
 
 Route::get('clients/{id}', [ClientController::class, 'show']);
+
+Route::get('reservations/', [ReservationController::class, 'index']);
+
+Route::get('reservations/{id}', [ReservationController::class, 'show']);
 
 // Route::get('saludo', function () {
 //     echo "Hola ";
