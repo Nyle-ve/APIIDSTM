@@ -29,6 +29,7 @@ Route::get('users/{id}', [UserController::class, 'show']);
 
 Route::post('users/', [UserController::class, 'store']);
 
+
 Route::get('clients/', [ClientController::class, 'index']);
 
 Route::get('clients/create', [ClientController::class, 'create']);
@@ -36,6 +37,11 @@ Route::get('clients/create', [ClientController::class, 'create']);
 Route::get('clients/{id}', [ClientController::class, 'show']);
 
 Route::post('clients/', [ClientController::class, 'store']);
+
+Route::get('clients/edit/{id}', [ClientController::class, 'edit']);
+
+Route::put('clients/', [ClientController::class, 'update']);
+
 
 Route::get('reservations/', [ReservationController::class, 'index']);
 

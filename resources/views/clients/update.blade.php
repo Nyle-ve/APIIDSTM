@@ -9,13 +9,15 @@
 <body>
     <form method="post" action="{{ url('clients/') }}">
         @csrf
+        @method('PUT')
         <label>Name: </label>
-        <input type="text" placeholder="Maria" name="name"><br>
+        <input type="text" value="{{$client->name}}" name="name"><br>
         <label>Email: </label>
-        <input type="email" placeholder="example@domail.com" name="email"><br>
+        <input type="email" value="{{$client->email}}" name="email"><br>
         <label>Phone: </label>
-        <input type="text" placeholder="6120000000" name="phone_number"><br>
-        <button type="submit">Guardar</button>
+        <input type="text" value="{{$client->phone_number}}" name="phone_number"><br>
+        <input type="hidden" name="id" value="{{$client->id}}">
+        <button type="submit">Actualizar</button>
     </form>
 </body>
 </html>
