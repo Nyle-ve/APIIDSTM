@@ -8,15 +8,20 @@
 </head>
 <body>
     <div class="container">
-        <form method="POST" action="{{ url('users/') }}">
+        <form method="POST" action="{{ url('login/') }}">
             @csrf
+            <h1>
+                @if(Auth::user())
+                    {{ Auth::user()->name }}
+                    {{ Auth::user()->lastname }}
+                @endif</h1>
             <legend>
-                Acceso al panel
+                Log In
             </legend>
-            <label for="">Name: </label>
-            <input name="name" type="text" placeholder="Ingrese su nombre">
-            <label for="">Last name: </label>
-            <input name="lastname" type="text" placeholder="Ingrese su apellido">
+            <label for="">Email: </label>
+            <input name="email" type="text" placeholder="Ingrese su correo">
+            <label for="">Password: </label>
+            <input name="password" type="password" placeholder="Ingrese su contraseña">
             <button type="submit" style="margin-left: 4px">OK</button>
         </form>
     </div>
