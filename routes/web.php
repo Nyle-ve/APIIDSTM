@@ -25,6 +25,10 @@ Route::get('login/', function () {
     return view('auth.login');
 })->name('login');
 
+Route::get('home/', function () {
+    return view('home');
+});
+
 Route::get('prueba/', function () {
     return ('hola');
 })->middleware('auth');
